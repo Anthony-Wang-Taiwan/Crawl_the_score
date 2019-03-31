@@ -20,5 +20,5 @@ def Output(words):
             else:
                 output += '缺\t\t缺\n'
                 ret.extend(['缺', '缺'])
-    # print(output)
+    print(output)
     return ret
