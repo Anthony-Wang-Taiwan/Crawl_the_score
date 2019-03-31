@@ -2,25 +2,25 @@ import requests
 from bs4 import BeautifulSoup
 from output import Output
 from mail import check_mail
+import json
 
-login_url = 'http://schoolsys.wlsh.tyc.edu.tw/online/login.asp'
-user = '610030'
-password = 'E125814309'
-filename = 'out.txt'
+
+with open("userdata.json", 'r') as file:
+    user_data = json.load(file)
+# import os
+# os._exit(0)
 
 payload = {
     'division': 'senior',
     'rdo': '1',
-    'Loginid': user,
-    'LoginPwd': password,
+    'Loginid': user_data['user'],
+    'LoginPwd': user_data['password'],
     'Uid': ''
 }
 
 s = requests.Session()
-result = s.post(login_url, data=payload)
-res2 = s.get('http://schoolsys.wlsh.tyc.edu.tw/online/selection_student/student\
-_subjects_number.asp?action=%A6U%A6%A1%A6%A8%C1Z&thisyear=107&thisterm=2&nu\
-mber=7201&exam_name=107%282%29%B2%C4%A4%40%A6%B8%ACq%A6%D2%02')
+result = s.post(user_data['login_url'], data=payload)
+res2 = s.get(user_data['load_url'])
 soup = BeautifulSoup(res2.text, features="html.parser")
 table_tag = soup.find('table', {'id': 'Table1'})
 tr_tags = table_tag.select('tr')
